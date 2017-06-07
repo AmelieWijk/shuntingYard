@@ -248,29 +248,15 @@ public class ShuntingYard {
             this.leftAssociative = isLeftAssociative;
         }
 
-        public String getName() {
-            return operatorName;
-        }
 
-        public int getPrecedence() {
-            return precedence;
-        }
-
-        public boolean isRightAssociative() {
-            return !leftAssociative;
-        }
-
-        public boolean isLeftAssociative() {
-            return leftAssociative;
-        }
 
         @Override
         public int compareTo(Operator o) {
             if(operatorName.equals(o.operatorName)){ //Name is unique, comparing with self.
                 return 0;
             }
-            if (this.leftAssociative && precedence <= o.precedence
-                    || !this.leftAssociative && precedence < o.precedence) {
+            if ((leftAssociative && precedence <= o.precedence)
+                    || (!leftAssociative && precedence < o.precedence)) {
                 return 1;
             }
             return -1;
