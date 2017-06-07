@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Benjamin Wijk on 2017-05-29.
@@ -16,7 +15,7 @@ public class ShuntingYard {
 
         output = new Stack<>();
         operatorStack = new Stack<>();
-        input = new LinkedBlockingQueue<>();
+        input = new ArrayDeque<>();
     }
 
     /**
