@@ -12,10 +12,6 @@ public class ShuntingYard {
 
     public ShuntingYard() {
         createOperators();
-
-        output = new Stack<>();
-        operatorStack = new Stack<>();
-        input = new ArrayDeque<>();
     }
 
     /**
@@ -25,6 +21,10 @@ public class ShuntingYard {
      * @return String with tokens sorted by RPN
      */
     public String sortToRPN(String calculation) {
+        output = new Stack<>();
+        operatorStack = new Stack<>();
+        input = new ArrayDeque<>();
+
         Scanner in = new Scanner(calculation);
 
         while (in.hasNext()) {
@@ -167,7 +167,7 @@ public class ShuntingYard {
         } catch (EmptyStackException e) {
             e.printStackTrace();
             printStacks();
-            System.exit(0); //To stop potential loops. One error is enough.
+            System.exit(1); //To stop potential loops. One error is enough.
         }
     }
 
@@ -190,14 +190,14 @@ public class ShuntingYard {
     }
 
     /**
-     * Try to parse token as int.
+     * Try to parse token as double.
      *
      * @param token
      * @return true if parse works, false otherwise.
      */
     private boolean isNumber(String token) {
         try {
-            Integer.parseInt(token);
+            Double.parseDouble(token);
             return true;
         } catch (NumberFormatException e) {
             return false;
