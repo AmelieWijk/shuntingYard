@@ -46,7 +46,6 @@ public class ShuntingYard {
             sb.append(" ");
         }
 
-
         return sb.toString();
     }
 
@@ -57,10 +56,8 @@ public class ShuntingYard {
      * @throws InputMismatchException separator or parenthesis mismatch
      */
     private void handleTokens() throws InputMismatchException {
-        String token = "";
-
         while (!input.isEmpty()) {
-            token = input.peek();
+            String token = input.peek();
 
             if (isNumber(token)) {
                 handleNumber();
