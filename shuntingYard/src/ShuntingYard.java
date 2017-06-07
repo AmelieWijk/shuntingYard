@@ -129,7 +129,7 @@ public class ShuntingYard {
                 Operator o1 = operators.get(input.peek());
                 Operator o2 = operators.get(operatorStack.peek());
 
-                if (o1.compareTo(o2) == 1) { //If precedence and associativity prerequisites are "met", pop operatorstack before input.
+                if (o1.compareTo(o2) == 1) { //If precedence and leftAssociative prerequisites are "met", pop operatorstack before input.
                     output.add(
                             operatorStack.pop());
                 } else { //prerequisites not met, break loop and only pop input to output.
@@ -240,12 +240,12 @@ public class ShuntingYard {
     private class Operator implements Comparable<Operator> {
         String operatorName;
         int precedence;
-        boolean associativity; //Left associative if true, right associative if false.
+        boolean leftAssociative; //Left associative if true, right associative if false.
 
         public Operator(String operatorName, int precedence, boolean isLeftAssociative) {
             this.operatorName = operatorName;
             this.precedence = precedence;
-            this.associativity = isLeftAssociative;
+            this.leftAssociative = isLeftAssociative;
         }
 
         public String getName() {
@@ -257,17 +257,20 @@ public class ShuntingYard {
         }
 
         public boolean isRightAssociative() {
-            return !associativity;
+            return !leftAssociative;
         }
 
         public boolean isLeftAssociative() {
-            return associativity;
+            return leftAssociative;
         }
 
         @Override
         public int compareTo(Operator o) {
-            if (this.associativity && precedence <= o.precedence
-                    || !this.associativity && precedence < o.precedence) {
+            if(operatorName.equals(o.operatorName)){ //Name is unique, comparing with self.
+                return 0;
+            }
+            if (this.leftAssociative && precedence <= o.precedence
+                    || !this.leftAssociative && precedence < o.precedence) {
                 return 1;
             }
             return -1;
