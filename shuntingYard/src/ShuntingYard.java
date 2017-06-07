@@ -30,6 +30,7 @@ public class ShuntingYard {
         while (in.hasNext()) {
             input.add(in.next());
         }
+        in.close();
 
         //Do all the work here.
         try {
@@ -41,19 +42,12 @@ public class ShuntingYard {
         //output sorted, create string.
         StringBuilder sb = new StringBuilder();
         for (String s : output) {
-            sb.append(s + " ");
+            sb.append(s);
+            sb.append(" ");
         }
-        String rpn = sb.toString();
 
-        clearData();
 
-        return rpn;
-    }
-
-    private void clearData() {
-        input.clear();
-        operatorStack.clear();
-        output.clear();
+        return sb.toString();
     }
 
     /**
