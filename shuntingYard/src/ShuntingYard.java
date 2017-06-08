@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Benjamin Wijk on 2017-05-29.
@@ -10,13 +9,11 @@ public class ShuntingYard {
     Queue<String> input;
 
     Map<String, Operator> operators;
+    Set<String> functions;
 
     public ShuntingYard() {
         createOperators();
-
-        output = new Stack<>();
-        operatorStack = new Stack<>();
-        input = new LinkedBlockingQueue<>();
+        createFunctions();
     }
 
     /**
@@ -26,11 +23,16 @@ public class ShuntingYard {
      * @return String with tokens sorted by RPN
      */
     public String sortToRPN(String calculation) {
+        output = new Stack<>();
+        operatorStack = new Stack<>();
+        input = new ArrayDeque<>();
+
         Scanner in = new Scanner(calculation);
 
         while (in.hasNext()) {
             input.add(in.next());
         }
+        in.close();
 
         //Do all the work here.
         try {
@@ -42,19 +44,11 @@ public class ShuntingYard {
         //output sorted, create string.
         StringBuilder sb = new StringBuilder();
         for (String s : output) {
-            sb.append(s + " ");
+            sb.append(s);
+            sb.append(" ");
         }
-        String rpn = sb.toString();
 
-        clearData();
-
-        return rpn;
-    }
-
-    private void clearData() {
-        input.clear();
-        operatorStack.clear();
-        output.clear();
+        return sb.toString();
     }
 
     /**
@@ -64,10 +58,8 @@ public class ShuntingYard {
      * @throws InputMismatchException separator or parenthesis mismatch
      */
     private void handleTokens() throws InputMismatchException {
-        String token = "";
-
         while (!input.isEmpty()) {
-            token = input.peek();
+            String token = input.peek();
 
             if (isNumber(token)) {
                 handleNumber();
@@ -95,13 +87,14 @@ public class ShuntingYard {
      * or parentheses were mismatched.
      */
     private void handleArgSeparator() {
-        while (isParenthesisLeft(input.peek())) {
+        while (!isParenthesisLeft(operatorStack.peek())) {
             output.add(
-                    input.poll());
+                    operatorStack.pop());
             if (input.isEmpty()) {
                 throw new InputMismatchException("ERROR: Separator misplaced or parenthesis mismatch");
             }
         }
+        input.poll(); // remove comma
     }
 
     /**
@@ -139,7 +132,7 @@ public class ShuntingYard {
                 Operator o1 = operators.get(input.peek());
                 Operator o2 = operators.get(operatorStack.peek());
 
-                if (o1.compareTo(o2) == 1) { //If precedence and associativity prerequisites are "met", pop operatorstack before input.
+                if (o1.compareTo(o2) == 1) { //If precedence and leftAssociative prerequisites are "met", pop operatorstack before input.
                     output.add(
                             operatorStack.pop());
                 } else { //prerequisites not met, break loop and only pop input to output.
@@ -177,7 +170,7 @@ public class ShuntingYard {
         } catch (EmptyStackException e) {
             e.printStackTrace();
             printStacks();
-            System.exit(0); //To stop potential loops. One error is enough.
+            System.exit(1); //To stop potential loops. One error is enough.
         }
     }
 
@@ -187,7 +180,7 @@ public class ShuntingYard {
      */
     private void popOperatorStack() {
         while (!operatorStack.isEmpty()) {
-            if (!isOperator(operatorStack.peek())) {
+            if (!isOperator(operatorStack.peek()) && !isFunction(operatorStack.peek())) {
                 printStacks();
                 throw new InputMismatchException("Parenthesis mismatch.");
             }
@@ -200,14 +193,14 @@ public class ShuntingYard {
     }
 
     /**
-     * Try to parse token as int.
+     * Try to parse token as double.
      *
      * @param token
      * @return true if parse works, false otherwise.
      */
     private boolean isNumber(String token) {
         try {
-            Integer.parseInt(token);
+            Double.parseDouble(token);
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -216,7 +209,7 @@ public class ShuntingYard {
 
     //NOT IMPLEMENTED
     private boolean isFunction(String token) {
-        return false;
+        return functions.contains(token);
     }
 
     private boolean isOperator(String token) {
@@ -247,46 +240,13 @@ public class ShuntingYard {
         operators.put("-", new Operator("-", 2, true));
     }
 
-    private class Operator implements Comparable<Operator> {
-        String operatorName;
-        int precedence;
-        boolean associativity; //Left associative if true, right associative if false.
+    private void createFunctions(){
+        functions = new HashSet<>();
 
-        public Operator(String operatorName, int precedence, boolean isLeftAssociative) {
-            this.operatorName = operatorName;
-            this.precedence = precedence;
-            this.associativity = isLeftAssociative;
-        }
-
-        public String getName() {
-            return operatorName;
-        }
-
-        public int getPrecedence() {
-            return precedence;
-        }
-
-        public boolean isRightAssociative() {
-            return !associativity;
-        }
-
-        public boolean isLeftAssociative() {
-            return associativity;
-        }
-
-        @Override
-        public int compareTo(Operator o) {
-            if (this.associativity && precedence <= o.precedence
-                    || !this.associativity && precedence < o.precedence) {
-                return 1;
-            }
-            return -1;
-        }
-
-        @Override
-        public String toString() {
-            return operatorName;
-        }
+        functions.add("sin");
+        functions.add("abs");
+        functions.add("cos");
+        functions.add("tan");
     }
 
 }
