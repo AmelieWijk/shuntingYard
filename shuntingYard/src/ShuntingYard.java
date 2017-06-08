@@ -85,6 +85,7 @@ public class ShuntingYard {
      * pop operators off the stack onto the output queue.
      * if no left parentheses are encountered, either the separator was misplaced
      * or parentheses were mismatched.
+     * finally, remove comma from input. (Or should it be pushed to output???)
      */
     private void handleArgSeparator() {
         while (!isParenthesisLeft(operatorStack.peek())) {
@@ -194,7 +195,6 @@ public class ShuntingYard {
 
     /**
      * Try to parse token as double.
-     *
      * @param token
      * @return true if parse works, false otherwise.
      */
