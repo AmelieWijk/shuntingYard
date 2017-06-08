@@ -9,9 +9,11 @@ public class ShuntingYard {
     Queue<String> input;
 
     Map<String, Operator> operators;
+    Set<String> functions;
 
     public ShuntingYard() {
         createOperators();
+        createFunctions();
     }
 
     /**
@@ -85,13 +87,14 @@ public class ShuntingYard {
      * or parentheses were mismatched.
      */
     private void handleArgSeparator() {
-        while (isParenthesisLeft(input.peek())) {
+        while (!isParenthesisLeft(operatorStack.peek())) {
             output.add(
-                    input.poll());
+                    operatorStack.pop());
             if (input.isEmpty()) {
                 throw new InputMismatchException("ERROR: Separator misplaced or parenthesis mismatch");
             }
         }
+        input.poll(); // remove comma
     }
 
     /**
@@ -177,7 +180,7 @@ public class ShuntingYard {
      */
     private void popOperatorStack() {
         while (!operatorStack.isEmpty()) {
-            if (!isOperator(operatorStack.peek())) {
+            if (!isOperator(operatorStack.peek()) && !isFunction(operatorStack.peek())) {
                 printStacks();
                 throw new InputMismatchException("Parenthesis mismatch.");
             }
@@ -206,7 +209,7 @@ public class ShuntingYard {
 
     //NOT IMPLEMENTED
     private boolean isFunction(String token) {
-        return false;
+        return functions.contains(token);
     }
 
     private boolean isOperator(String token) {
@@ -237,35 +240,13 @@ public class ShuntingYard {
         operators.put("-", new Operator("-", 2, true));
     }
 
-    private class Operator implements Comparable<Operator> {
-        String operatorName;
-        int precedence;
-        boolean leftAssociative; //Left associative if true, right associative if false.
+    private void createFunctions(){
+        functions = new HashSet<>();
 
-        public Operator(String operatorName, int precedence, boolean isLeftAssociative) {
-            this.operatorName = operatorName;
-            this.precedence = precedence;
-            this.leftAssociative = isLeftAssociative;
-        }
-
-
-
-        @Override
-        public int compareTo(Operator o) {
-            if(operatorName.equals(o.operatorName)){ //Name is unique, comparing with self.
-                return 0;
-            }
-            if ((leftAssociative && precedence <= o.precedence)
-                    || (!leftAssociative && precedence < o.precedence)) {
-                return 1;
-            }
-            return -1;
-        }
-
-        @Override
-        public String toString() {
-            return operatorName;
-        }
+        functions.add("sin");
+        functions.add("abs");
+        functions.add("cos");
+        functions.add("tan");
     }
 
 }
