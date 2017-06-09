@@ -1,5 +1,7 @@
 /**
- * Created by Elev1 on 2017-06-09.
+ * Currently contains 2 tests: testSortToRPN tests a few basic cases, and makes sure the output is correct.
+ * testTokenHandling generates sufficiently correct infix statements, to test that sortToRPN can process them.
+ * Created by Benjamin Wijk on 2017-06-09.
  */
 class ShuntingYardTest extends groovy.util.GroovyTestCase {
     Set<String> validTokens;
@@ -9,6 +11,40 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
     public ShuntingYardTest(){
         rand = new Random();
         setupTokens();
+    }
+
+    void testSortToRPN() {
+        ShuntingYard sy = new ShuntingYard();
+
+        assertEquals("1 2 3 * 4 5 / 6 - 7 * - 8 * +",
+                sy.sortToRPN("1 + ( 2 * 3 - ( 4 / 5 - 6 ) * 7 ) * 8"));
+
+        assertEquals("3 4 2 * 1 5 - 2 3 ^ ^ / +",
+                sy.sortToRPN("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3"));
+
+        assertEquals("2 3 max( 3 / 3.1415 * sin(",
+                sy.sortToRPN("sin( max( 2 , 3 ) / 3 * 3.1415 )"));
+    }
+
+    /**
+     * Generates random infix strings to test. The strings should be good enough to properly test the infix to RPN algorithm, but aren't always using correct syntax atm. <br>
+     *     (It is currently possible for a function to only contain an operator for example)
+     */
+    void testTokenHandling(){
+        final int n = 3000;
+        final int maxLength = 3000;
+        ShuntingYard sy = new ShuntingYard();
+
+        for(int i=0; i<n; i++){
+            try {
+                String infix = generateInfix(rand.nextInt(maxLength) + 1);
+                sy.sortToRPN(infix);
+                assert true;
+            } catch(Exception e){
+                e.printStackTrace();
+                assert false;
+            }
+        }
     }
 
     String generateInfix(int counter){
@@ -29,6 +65,13 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
 
     //TODO add support for arg separator
     //TODO make sure internal part is a correct operation (e.g. not just an operator)
+    /**
+     * Creates a function with tokens inside of a closed parenthesis. this function can contain other functions. <br>
+     *     statements inside a function can currently be invalid (for example, a single operator with no other tokens). <br>
+     *     The statement should however be sufficiently correct to be able to be sorted by sortToRPN().
+     * @param tokenCount number of tokens that will be used inside function statement
+     * @return String of infix tokens separated by whitespace.
+     */
     String getValidFunction(int tokenCount){
         StringJoiner sj = new StringJoiner(" ");
         sj.add("sin(");
@@ -96,39 +139,6 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
         validTokens.add("+");
         validTokens.add("-");
     }
-    void testSortToRPN() {
-        ShuntingYard sy = new ShuntingYard();
 
-        assertEquals("1 2 3 * 4 5 / 6 - 7 * - 8 * +",
-                sy.sortToRPN("1 + ( 2 * 3 - ( 4 / 5 - 6 ) * 7 ) * 8"));
-
-        assertEquals("3 4 2 * 1 5 - 2 3 ^ ^ / +",
-                sy.sortToRPN("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3"));
-
-       assertEquals("2 3 max( 3 / 3.1415 * sin(",
-                sy.sortToRPN("sin( max( 2 , 3 ) / 3 * 3.1415 )"));
-    }
-
-    /**
-     * Generates random infix strings to test. The strings should be good enough to properly test the infix to RPN algorithm, but aren't always using correct syntax atm. <br>
-     *     (It is currently possible for a function to only contain an operator for example)
-     */
-    void testTokenHandling(){
-        final int n = 3000;
-        final int maxLength = 3000;
-        ShuntingYard sy = new ShuntingYard();
-
-        for(int i=0; i<n; i++){
-            try {
-                String infix = generateInfix(rand.nextInt(maxLength) + 1);
-                sy.sortToRPN(infix);
-                assert true;
-            } catch(Exception e){
-                e.printStackTrace();
-                assert false;
-            }
-        }
-
-    }
 
 }
