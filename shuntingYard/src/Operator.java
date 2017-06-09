@@ -1,4 +1,5 @@
 /**
+ * Class for tokens of type operator, which need a compareTo to function properly.
  * Created by Benjamin Wijk on 2017-06-08.
  */
 public class Operator implements Comparable<Operator> {
