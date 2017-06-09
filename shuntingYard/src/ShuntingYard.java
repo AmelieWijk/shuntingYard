@@ -66,9 +66,9 @@ public class ShuntingYard {
                 handleParenthesisLeft();
             } else if (isParenthesisRight(token)) {
                 handleParenthesisRight();
-            } else if (isFunction(token)) { //NOT IMPLEMENTED
+            } else if (isFunction(token)) {
                 handleFunction();
-            } else if (isArgSeparator(token)) { //Weird implementation probably, NOT TESTED.
+            } else if (isArgSeparator(token)) {
                 handleArgSeparator();
             }
         }
@@ -215,7 +215,6 @@ public class ShuntingYard {
         }
     }
 
-    //NOT IMPLEMENTED
     private boolean isFunction(String token) {
         return functions.contains(token);
     }
