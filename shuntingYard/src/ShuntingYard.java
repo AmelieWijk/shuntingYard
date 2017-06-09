@@ -1,6 +1,7 @@
 import java.util.*;
 
 /**
+ * A class that sorts a string of infix to Reverse Polish Notation (RPN)
  * Created by Benjamin Wijk on 2017-05-29.
  */
 public class ShuntingYard {
@@ -82,7 +83,7 @@ public class ShuntingYard {
      * pop operators off the stack onto the output queue.
      * if no left parentheses are encountered, either the separator was misplaced
      * or parentheses were mismatched.
-     * finally, remove comma from input. (Or should it be pushed to output???)
+     * finally, remove comma from input.
      */
     private void handleArgSeparator() {
         while (!isParenthesisLeft(operatorStack.peek()) &&
@@ -142,8 +143,6 @@ public class ShuntingYard {
         }
         operatorStack.add(
                 input.poll());
-
-
     }
 
     //If the token is a left parenthesis (i.e. "("), then push it onto the stack.
