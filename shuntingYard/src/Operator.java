@@ -13,7 +13,7 @@ public class Operator implements Comparable<Operator> {
             this.leftAssociative = isLeftAssociative;
         }
 
-        /**
+        /** TODO change "direction"?
          * compares this operator with another operator o.
          * @param o
          * @return 1 if o is "bigger", 0 if comparing with itself and -1 if this operator is "bigger"
