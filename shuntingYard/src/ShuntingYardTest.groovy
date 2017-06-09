@@ -1,5 +1,5 @@
 /**
- * Currently contains 2 tests: testSortToRPN tests a few basic cases, and makes sure the output is correct.
+ * Currently contains 2 tests: testSortToRPN tests a few basic cases, and makes sure the output is correct (according to other sources on shunting yards).
  * testTokenHandling generates sufficiently correct infix statements, to test that sortToRPN can process them.
  * Created by Benjamin Wijk on 2017-06-09.
  */
