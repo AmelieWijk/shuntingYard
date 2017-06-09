@@ -6,7 +6,7 @@ import java.util.*;
  */
 public class ShuntingYard {
     Stack<String> output;
-    Stack<String> operatorStack;
+    Stack<String> stack;
     Queue<String> input;
 
     Map<String, Operator> operators;
@@ -25,7 +25,7 @@ public class ShuntingYard {
      */
     public String sortToRPN(String calculation) {
         output = new Stack<>();
-        operatorStack = new Stack<>();
+        stack = new Stack<>();
         input = new ArrayDeque<>();
 
         try(Scanner in = new Scanner(calculation)) {
@@ -74,7 +74,7 @@ public class ShuntingYard {
             }
         }
         //input == empty
-        popOperatorStack();
+        popEntireStack();
     }
 
     /**
@@ -86,10 +86,10 @@ public class ShuntingYard {
      * finally, remove comma from input.
      */
     private void handleArgSeparator() {
-        while (!isParenthesisLeft(operatorStack.peek()) &&
-                !isFunction(operatorStack.peek())) {
+        while (!isParenthesisLeft(stack.peek()) &&
+                !isFunction(stack.peek())) {
             output.add(
-                    operatorStack.pop());
+                    stack.pop());
             if (input.isEmpty()) {
                 throw new InputMismatchException("ERROR: Separator misplaced or parenthesis mismatch");
             }
@@ -101,7 +101,7 @@ public class ShuntingYard {
      * If the token is a function token, then push it onto the stack.
      */
     private void handleFunction() {
-        operatorStack.add(
+        stack.add(
                 input.poll());
     }
 
@@ -116,38 +116,38 @@ public class ShuntingYard {
     /*
      if the token is an operator, a, then:
      while there is an operator token b, at the top of the
-     operator stack and either a is left-associative and its precedence is
+     stack and either a is left-associative and its precedence is
      less than b, or a is right associative, and has precedence less than
      that of b:
-     pop b off the operator stack, onto the output queue;
-     at the end of iteration push a onto the operator stack.
+     pop b off the stack, onto the output queue;
+     at the end of iteration push a onto the stack.
      */
     private void handleOperator() {
-        if (operatorStack.empty()) { //Nothing to compare, just add to stack
-            operatorStack.add(
+        if (stack.empty()) { //Nothing to compare, just add to stack
+            stack.add(
                     input.poll());
             return;
         }
 
-        while (!operatorStack.empty() && isOperator(operatorStack.peek())) { //While valid operator comparison can be made
+        while (!stack.empty() && isOperator(stack.peek())) { //While valid operator comparison can be made
             Operator o1 = operators.get(input.peek());
-            Operator o2 = operators.get(operatorStack.peek());
+            Operator o2 = operators.get(stack.peek());
 
-            if (o1.compareTo(o2) == 1) { //If precedence and leftAssociative prerequisites are "met", pop operatorstack before input.
+            if (o1.compareTo(o2) == 1) { //If precedence and leftAssociative prerequisites are "met", pop stack before input.
                 output.add(
-                        operatorStack.pop());
+                        stack.pop());
             } else { //prerequisites not met, break loop and only pop input to output.
 
                 break;
             }
         }
-        operatorStack.add(
+        stack.add(
                 input.poll());
     }
 
     //If the token is a left parenthesis (i.e. "("), then push it onto the stack.
     private void handleParenthesisLeft() {
-        operatorStack.add(
+        stack.add(
                 input.poll());
     }
 
@@ -162,17 +162,17 @@ public class ShuntingYard {
      */
     private void handleParenthesisRight() {
         try {
-            while (!isParenthesisLeft(operatorStack.peek()) &&
-                    !isFunction(operatorStack.peek())) { //More operators "in" parenthesis, keep popping.
+            while (!isParenthesisLeft(stack.peek()) &&
+                    !isFunction(stack.peek())) { //More operators "in" parenthesis, keep popping.
 
                 output.add(
-                        operatorStack.pop());
+                        stack.pop());
             } //Loop done, remove parenthesis.
 
-            if(isFunction(operatorStack.peek())){
-                output.add(operatorStack.pop()); //add function token
+            if(isFunction(stack.peek())){
+                output.add(stack.pop()); //add function token
             }else{
-                operatorStack.pop(); //Pop left parenthesis
+                stack.pop(); //Pop left parenthesis
             }
             input.poll(); //Pop right parenthesis
         } catch (EmptyStackException e) {
@@ -186,13 +186,13 @@ public class ShuntingYard {
      * Called after all tokens in input have been handled. Pops operators from the stack until empty. <br>
      * Throws InputMismatchException if a parenthesis (or non-operator) is still found in stack.
      */
-    private void popOperatorStack() {
-        while (!operatorStack.isEmpty()) {
-            if (!isOperator(operatorStack.peek()) && !isFunction(operatorStack.peek())) {
+    private void popEntireStack() {
+        while (!stack.isEmpty()) {
+            if (!isOperator(stack.peek()) && !isFunction(stack.peek())) {
                 printStacks();
                 throw new InputMismatchException("Parenthesis mismatch.");
             }
-            output.add(operatorStack.pop());
+            output.add(stack.pop());
         }
     }
 
@@ -232,7 +232,7 @@ public class ShuntingYard {
 
     private void printStacks() {
         System.out.println("in: " + input);
-        System.out.println("op: " + operatorStack);
+        System.out.println("op: " + stack);
         System.out.println("out: " + output);
     }
 
