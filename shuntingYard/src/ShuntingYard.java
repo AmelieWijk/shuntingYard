@@ -86,7 +86,8 @@ public class ShuntingYard {
      * finally, remove comma from input. (Or should it be pushed to output???)
      */
     private void handleArgSeparator() {
-        while (!isParenthesisLeft(operatorStack.peek())) {
+        while (!isParenthesisLeft(operatorStack.peek()) &&
+                !isFunction(operatorStack.peek())) {
             output.add(
                     operatorStack.pop());
             if (input.isEmpty()) {
@@ -163,11 +164,18 @@ public class ShuntingYard {
      */
     private void handleParenthesisRight() {
         try {
-            while (!isParenthesisLeft(operatorStack.peek())) { //More operators "in" parenthesis, keep popping.
+            while (!isParenthesisLeft(operatorStack.peek()) &&
+                    !isFunction(operatorStack.peek())) { //More operators "in" parenthesis, keep popping.
+
                 output.add(
                         operatorStack.pop());
             } //Loop done, remove parenthesis.
-            operatorStack.pop(); //Pop left parenthesis
+
+            if(isFunction(operatorStack.peek())){
+                output.add(operatorStack.pop()); //add function token
+            }else{
+                operatorStack.pop(); //Pop left parenthesis
+            }
             input.poll(); //Pop right parenthesis
         } catch (EmptyStackException e) {
             e.printStackTrace();
@@ -244,10 +252,11 @@ public class ShuntingYard {
     private void createFunctions(){
         functions = new HashSet<>();
 
-        functions.add("sin");
-        functions.add("abs");
-        functions.add("cos");
-        functions.add("tan");
+        functions.add("sin(");
+        functions.add("abs(");
+        functions.add("cos(");
+        functions.add("tan(");
+        functions.add("max(");
     }
 
 }
