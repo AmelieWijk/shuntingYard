@@ -31,8 +31,8 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
      *     (It is currently possible for a function to only contain an operator for example)
      */
     void testTokenHandling(){
-        final int n = 3000;
-        final int maxLength = 3000;
+        final int n = 1000;
+        final int maxLength = 1000;
         ShuntingYard sy = new ShuntingYard();
 
         for(int i=0; i<n; i++){
