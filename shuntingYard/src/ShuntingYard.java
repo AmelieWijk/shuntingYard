@@ -42,13 +42,11 @@ public class ShuntingYard {
         }
 
         //output sorted, create string.
-        StringBuilder sb = new StringBuilder();
+        StringJoiner sj = new StringJoiner(" ");
         for (String s : output) {
-            sb.append(s);
-            sb.append(" ");
+            sj.add(s);
         }
-
-        return sb.toString();
+        return sj.toString();
     }
 
     /**
@@ -127,22 +125,25 @@ public class ShuntingYard {
         if (operatorStack.empty()) { //Nothing to compare, just add to stack
             operatorStack.add(
                     input.poll());
-
-        } else {
-            while (!operatorStack.empty() && isOperator(operatorStack.peek())) { //While valid operator comparison can be made
-                Operator o1 = operators.get(input.peek());
-                Operator o2 = operators.get(operatorStack.peek());
-
-                if (o1.compareTo(o2) == 1) { //If precedence and leftAssociative prerequisites are "met", pop operatorstack before input.
-                    output.add(
-                            operatorStack.pop());
-                } else { //prerequisites not met, break loop and only pop input to output.
-                    break;
-                }
-            }
-            operatorStack.add(
-                    input.poll());
+            return;
         }
+
+        while (!operatorStack.empty() && isOperator(operatorStack.peek())) { //While valid operator comparison can be made
+            Operator o1 = operators.get(input.peek());
+            Operator o2 = operators.get(operatorStack.peek());
+
+            if (o1.compareTo(o2) == 1) { //If precedence and leftAssociative prerequisites are "met", pop operatorstack before input.
+                output.add(
+                        operatorStack.pop());
+            } else { //prerequisites not met, break loop and only pop input to output.
+
+                break;
+            }
+        }
+        operatorStack.add(
+                input.poll());
+
+
     }
 
     //If the token is a left parenthesis (i.e. "("), then push it onto the stack.
