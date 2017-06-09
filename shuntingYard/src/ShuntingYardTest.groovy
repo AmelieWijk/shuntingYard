@@ -2,7 +2,102 @@
  * Created by Elev1 on 2017-06-09.
  */
 class ShuntingYardTest extends groovy.util.GroovyTestCase {
+    Set<String> validTokens;
+    Set<String> functionTokens;
 
+    Random rand;
+    public ShuntingYardTest(){
+        rand = new Random();
+        setupTokens();
+    }
+
+    String generateInfix(int counter){
+        StringJoiner sj = new StringJoiner(" ");
+
+        while(counter > 0) {
+            if (rand.nextInt(10) + 1 < 2 && counter > 3) {
+                int i = rand.nextInt(counter - 2) + 1;
+                sj.add(getValidFunction(i));
+                counter = i;
+            } else{
+                sj.add(getValidToken());
+                counter--;
+            }
+        }
+
+        return sj.toString();
+    }
+
+    //TODO add support for arg separator
+    //TODO make sure internal part is a correct operation (e.g. not just an operator)
+    String getValidFunction(int tokenCount){
+        StringJoiner sj = new StringJoiner(" ");
+        sj.add("sin(");
+
+        for(int i=0; i<tokenCount; i++){
+            int tokensLeft = tokenCount - i - 1;
+            int tokenOrFunction = rand.nextInt(2);
+
+            if(tokensLeft >= 3 && tokenOrFunction == 0) { //Enough tokens to create a function inside this function
+                    int internalTokenCount = rand.nextInt(tokensLeft-2)+1;
+                    sj.add(getValidFunction(internalTokenCount))
+                    i = i + internalTokenCount + 2; //"Shift" i to match the amount of tokens added
+            } else {
+                sj.add(getValidToken());
+            }
+        }
+
+        sj.add(")");
+
+        return sj.toString();
+
+    }
+
+    String getValidToken() {
+        int index = rand.nextInt(3);
+
+        switch(index){
+            case 0:
+                return rand.nextDouble();
+            case 1:
+                return rand.nextInt();
+            case 2:
+                return getRandomOperator();
+        }
+    }
+
+    String getRandomOperator(){
+        int index = rand.nextInt(validTokens.size());
+
+        return validTokens.getAt(index);
+    }
+
+
+    void setupTokens(){
+        setupValidTokens();
+        setupFunctionTokens();
+    }
+
+    void setupFunctionTokens() {
+        functionTokens = new HashSet<>();
+
+        functionTokens.add("max(");
+        functionTokens.add("sin(");
+        functionTokens.add("cos(");
+        functionTokens.add("tan(");
+        functionTokens.add("cot(");
+
+    }
+
+    void setupValidTokens() {
+        validTokens = new HashSet<>();
+
+        validTokens.add("^");
+        validTokens.add("*");
+        validTokens.add("/");
+        validTokens.add("+");
+        validTokens.add("-");
+    }
     void testSortToRPN() {
         ShuntingYard sy = new ShuntingYard();
 
@@ -15,4 +110,30 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
        assertEquals("2 3 max( 3 / 3.1415 * sin(",
                 sy.sortToRPN("sin( max( 2 , 3 ) / 3 * 3.1415 )"));
     }
+
+    /**
+     * Generates random infix strings to test. The strings should be good enough to properly test the infix to RPN algorithm, but aren't always using correct syntax atm. <br>
+     *     (a function can contain only an operator for example)
+     *
+     */
+    void testTokenHandling(){
+        final int n = 20;
+        final int maxLength = 100;
+        ShuntingYard sy = new ShuntingYard();
+        String infix = "";
+        for(int i=0; i<n; i++){
+            try {
+                infix = generateInfix(rand.nextInt(maxLength) + 1);
+            //    println infix
+                sy.sortToRPN(infix);
+                assert true;
+            } catch(Exception e){
+
+                e.printStackTrace();
+                assert false;
+            }
+        }
+
+    }
+
 }
