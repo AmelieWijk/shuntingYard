@@ -27,12 +27,11 @@ public class ShuntingYard {
         operatorStack = new Stack<>();
         input = new ArrayDeque<>();
 
-        Scanner in = new Scanner(calculation);
-
-        while (in.hasNext()) {
-            input.add(in.next());
+        try(Scanner in = new Scanner(calculation)) {
+            while (in.hasNext()) {
+                input.add(in.next());
+            }
         }
-        in.close();
 
         //Do all the work here.
         try {
