@@ -4,7 +4,7 @@
 public class Operator implements Comparable<Operator> {
         String operatorName;
         int precedence;
-        boolean leftAssociative; //Left associative if true, right associative if false.
+        boolean leftAssociative;
 
         public Operator(String operatorName, int precedence, boolean isLeftAssociative) {
             this.operatorName = operatorName;
