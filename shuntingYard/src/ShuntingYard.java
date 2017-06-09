@@ -42,13 +42,11 @@ public class ShuntingYard {
         }
 
         //output sorted, create string.
-        StringBuilder sb = new StringBuilder();
+        StringJoiner sj = new StringJoiner(" ");
         for (String s : output) {
-            sb.append(s);
-            sb.append(" ");
+            sj.add(s);
         }
-
-        return sb.toString();
+        return sj.toString();
     }
 
     /**
@@ -88,7 +86,8 @@ public class ShuntingYard {
      * finally, remove comma from input. (Or should it be pushed to output???)
      */
     private void handleArgSeparator() {
-        while (!isParenthesisLeft(operatorStack.peek())) {
+        while (!isParenthesisLeft(operatorStack.peek()) &&
+                !isFunction(operatorStack.peek())) {
             output.add(
                     operatorStack.pop());
             if (input.isEmpty()) {
@@ -127,22 +126,25 @@ public class ShuntingYard {
         if (operatorStack.empty()) { //Nothing to compare, just add to stack
             operatorStack.add(
                     input.poll());
-
-        } else {
-            while (!operatorStack.empty() && isOperator(operatorStack.peek())) { //While valid operator comparison can be made
-                Operator o1 = operators.get(input.peek());
-                Operator o2 = operators.get(operatorStack.peek());
-
-                if (o1.compareTo(o2) == 1) { //If precedence and leftAssociative prerequisites are "met", pop operatorstack before input.
-                    output.add(
-                            operatorStack.pop());
-                } else { //prerequisites not met, break loop and only pop input to output.
-                    break;
-                }
-            }
-            operatorStack.add(
-                    input.poll());
+            return;
         }
+
+        while (!operatorStack.empty() && isOperator(operatorStack.peek())) { //While valid operator comparison can be made
+            Operator o1 = operators.get(input.peek());
+            Operator o2 = operators.get(operatorStack.peek());
+
+            if (o1.compareTo(o2) == 1) { //If precedence and leftAssociative prerequisites are "met", pop operatorstack before input.
+                output.add(
+                        operatorStack.pop());
+            } else { //prerequisites not met, break loop and only pop input to output.
+
+                break;
+            }
+        }
+        operatorStack.add(
+                input.poll());
+
+
     }
 
     //If the token is a left parenthesis (i.e. "("), then push it onto the stack.
@@ -162,11 +164,18 @@ public class ShuntingYard {
      */
     private void handleParenthesisRight() {
         try {
-            while (!isParenthesisLeft(operatorStack.peek())) { //More operators "in" parenthesis, keep popping.
+            while (!isParenthesisLeft(operatorStack.peek()) &&
+                    !isFunction(operatorStack.peek())) { //More operators "in" parenthesis, keep popping.
+
                 output.add(
                         operatorStack.pop());
             } //Loop done, remove parenthesis.
-            operatorStack.pop(); //Pop left parenthesis
+
+            if(isFunction(operatorStack.peek())){
+                output.add(operatorStack.pop()); //add function token
+            }else{
+                operatorStack.pop(); //Pop left parenthesis
+            }
             input.poll(); //Pop right parenthesis
         } catch (EmptyStackException e) {
             e.printStackTrace();
@@ -243,10 +252,11 @@ public class ShuntingYard {
     private void createFunctions(){
         functions = new HashSet<>();
 
-        functions.add("sin");
-        functions.add("abs");
-        functions.add("cos");
-        functions.add("tan");
+        functions.add("sin(");
+        functions.add("abs(");
+        functions.add("cos(");
+        functions.add("tan(");
+        functions.add("max(");
     }
 
 }
