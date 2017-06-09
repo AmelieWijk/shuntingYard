@@ -12,7 +12,7 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
         assertEquals("3 4 2 * 1 5 - 2 3 ^ ^ / +",
                 sy.sortToRPN("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3"));
 
-       assertEquals("2 3 max 3 / 3.1415 * sin",
+       assertEquals("2 3 max( 3 / 3.1415 * sin(",
                 sy.sortToRPN("sin( max( 2 , 3 ) / 3 * 3.1415 )"));
     }
 }
