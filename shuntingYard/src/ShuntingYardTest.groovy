@@ -24,7 +24,6 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
                 counter--;
             }
         }
-
         return sj.toString();
     }
 
@@ -72,7 +71,6 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
         return validTokens.getAt(index);
     }
 
-
     void setupTokens(){
         setupValidTokens();
         setupFunctionTokens();
@@ -113,22 +111,19 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
 
     /**
      * Generates random infix strings to test. The strings should be good enough to properly test the infix to RPN algorithm, but aren't always using correct syntax atm. <br>
-     *     (a function can contain only an operator for example)
-     *
+     *     (It is currently possible for a function to only contain an operator for example)
      */
     void testTokenHandling(){
-        final int n = 20;
-        final int maxLength = 100;
+        final int n = 3000;
+        final int maxLength = 3000;
         ShuntingYard sy = new ShuntingYard();
-        String infix = "";
+
         for(int i=0; i<n; i++){
             try {
-                infix = generateInfix(rand.nextInt(maxLength) + 1);
-            //    println infix
+                String infix = generateInfix(rand.nextInt(maxLength) + 1);
                 sy.sortToRPN(infix);
                 assert true;
             } catch(Exception e){
-
                 e.printStackTrace();
                 assert false;
             }
