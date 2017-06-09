@@ -27,12 +27,11 @@ public class ShuntingYard {
         operatorStack = new Stack<>();
         input = new ArrayDeque<>();
 
-        Scanner in = new Scanner(calculation);
-
-        while (in.hasNext()) {
-            input.add(in.next());
+        try(Scanner in = new Scanner(calculation)) {
+            while (in.hasNext()) {
+                input.add(in.next());
+            }
         }
-        in.close();
 
         //Do all the work here.
         try {
@@ -67,9 +66,9 @@ public class ShuntingYard {
                 handleParenthesisLeft();
             } else if (isParenthesisRight(token)) {
                 handleParenthesisRight();
-            } else if (isFunction(token)) { //NOT IMPLEMENTED
+            } else if (isFunction(token)) {
                 handleFunction();
-            } else if (isArgSeparator(token)) { //Weird implementation probably, NOT TESTED.
+            } else if (isArgSeparator(token)) {
                 handleArgSeparator();
             }
         }
@@ -216,7 +215,6 @@ public class ShuntingYard {
         }
     }
 
-    //NOT IMPLEMENTED
     private boolean isFunction(String token) {
         return functions.contains(token);
     }
