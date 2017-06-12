@@ -1,20 +1,21 @@
+import tokens.Operator;
+
 import java.util.*;
 
 /**
+ * TODO use tokenizer for optimization?? (is<X> check only done once)
  * A class that sorts a string of infix to Reverse Polish Notation (RPN)
  * Created by Benjamin Wijk on 2017-05-29.
  */
 public class ShuntingYard {
-    Stack<String> output;
-    Stack<String> stack;
-    Queue<String> input;
+    private Stack<String> output;
+    private Stack<String> stack;
+    private Queue<String> input;
 
-    Map<String, Operator> operators;
-    Set<String> functions;
+    private Map<String, Operator> operators;
 
     public ShuntingYard() {
         createOperators();
-        createFunctions();
     }
 
     /**
@@ -132,8 +133,9 @@ public class ShuntingYard {
         while (!stack.empty() && isOperator(stack.peek())) { //While valid operator comparison can be made
             Operator o1 = operators.get(input.peek());
             Operator o2 = operators.get(stack.peek());
+            int compVal = o1.compareTo(o2);
 
-            if (o1.compareTo(o2) == 1) { //If precedence and leftAssociative prerequisites are "met", pop stack before input.
+            if (compVal == 1) { //If precedence and leftAssociative prerequisites are "met", pop stack before input.
                 output.add(
                         stack.pop());
             } else { //prerequisites not met, break loop and only pop input to output.
@@ -143,6 +145,7 @@ public class ShuntingYard {
         }
         stack.add(
                 input.poll());
+
     }
 
     //If the token is a left parenthesis (i.e. "("), then push it onto the stack.
@@ -206,6 +209,8 @@ public class ShuntingYard {
      * @return true if parse works, false otherwise.
      */
     private boolean isNumber(String token) {
+        String regex = "\\-?\\d+(.\\d+)?";
+        regex.matches(regex);
         try {
             Double.parseDouble(token);
             return true;
@@ -215,7 +220,7 @@ public class ShuntingYard {
     }
 
     private boolean isFunction(String token) {
-        return functions.contains(token);
+        return token.matches("[a-zA-Z]+[(]");
     }
 
     private boolean isOperator(String token) {
@@ -246,14 +251,5 @@ public class ShuntingYard {
         operators.put("-", new Operator("-", 2, true));
     }
 
-    private void createFunctions(){
-        functions = new HashSet<>();
-
-        functions.add("sin(");
-        functions.add("abs(");
-        functions.add("cos(");
-        functions.add("tan(");
-        functions.add("max(");
-    }
 
 }
