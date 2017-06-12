@@ -37,7 +37,7 @@ public class FormatterComplicatedForBinaryMinus {
     }
 
     public void setupPatterns(){
-        Pattern number = Pattern.compile("^\\d+(\\.\\d+)?"); //allows integer or double.
+        Pattern number = Pattern.compile("^-?\\d+(\\.\\d+)?"); //allows integer or double.
         Pattern operator = Pattern.compile("^[-+*^/]");
         Pattern function = Pattern.compile("^[a-zA-Z]*\\(");
         Pattern rightParenthesis = Pattern.compile("^\\)");
