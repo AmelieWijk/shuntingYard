@@ -1,4 +1,4 @@
-package tokens;
+package token;
 
 /**
  * Created by Benjamin Wijk on 2017-06-12.

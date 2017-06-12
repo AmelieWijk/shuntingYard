@@ -1,14 +1,14 @@
-package tokens;
+package token;
 
 import java.util.Stack;
 
 /**
  * Created by Benjamin Wijk on 2017-06-12.
  */
-public class Number implements Token {
-    private String string;
+public class Separator implements Token {
+    String string;
 
-    public Number(String string){
+    public Separator(String string){
         this.string = string;
     }
 
@@ -21,5 +21,4 @@ public class Number implements Token {
     public void handle(Stack<Token> stack, Stack<Token> output) {
 
     }
-
 }

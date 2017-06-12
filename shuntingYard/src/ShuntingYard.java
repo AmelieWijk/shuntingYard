@@ -1,4 +1,4 @@
-import tokens.Operator;
+import token.Operator;
 
 import java.util.*;
 
@@ -19,10 +19,10 @@ public class ShuntingYard {
     }
 
     /**
-     * Begins the process of sorting tokens according to Reverse Polish Notation
+     * Begins the process of sorting token according to Reverse Polish Notation
      *
      * @param calculation Calculation to be sorted. Each token should be separated by whitespace.
-     * @return String with tokens sorted by RPN
+     * @return String with token sorted by RPN
      */
     public String sortToRPN(String calculation) {
         output = new Stack<>();
@@ -186,7 +186,7 @@ public class ShuntingYard {
     }
 
     /**
-     * Called after all tokens in input have been handled. Pops operators from the stack until empty. <br>
+     * Called after all token in input have been handled. Pops operators from the stack until empty. <br>
      * Throws InputMismatchException if a parenthesis (or non-operator) is still found in stack.
      */
     private void popEntireStack() {
@@ -209,8 +209,7 @@ public class ShuntingYard {
      * @return true if parse works, false otherwise.
      */
     private boolean isNumber(String token) {
-        String regex = "-?\\d+(.\\d+)?";
-        regex.matches(regex);
+
         try {
             Double.parseDouble(token);
             return true;
