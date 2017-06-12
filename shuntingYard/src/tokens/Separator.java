@@ -3,7 +3,7 @@ package tokens;
 import java.util.Stack;
 
 /**
- * Created by Elev1 on 2017-06-12.
+ * Created by Benjamin Wijk on 2017-06-12.
  */
 public class Separator implements Token {
     String string;

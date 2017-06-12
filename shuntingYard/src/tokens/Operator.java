@@ -27,7 +27,6 @@ public class Operator implements Comparable<Operator>, Token {
 
     }
 
-
     /**
      * TODO change "direction"?
      * compares this operator with another operator o.

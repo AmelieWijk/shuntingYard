@@ -209,7 +209,7 @@ public class ShuntingYard {
      * @return true if parse works, false otherwise.
      */
     private boolean isNumber(String token) {
-        String regex = "\\-?\\d+(.\\d+)?";
+        String regex = "-?\\d+(.\\d+)?";
         regex.matches(regex);
         try {
             Double.parseDouble(token);
