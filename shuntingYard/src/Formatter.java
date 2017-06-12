@@ -11,11 +11,8 @@ public class Formatter {
     List<Pattern> patterns;
     StringJoiner sj;
 
-    public Formatter(String string){
+    public Formatter(){
         setupPatterns();
-
-
-
     }
 
     public String formatString(String string) {
@@ -53,11 +50,9 @@ public class Formatter {
     }
 
     public static void main (String[] args){
-    Formatter form = new Formatter("321312-32.423(hej(3+3))");
-
-
-
-
+    Formatter form = new Formatter();
+    System.out.println(form.formatString("321312-32.423(hej(3+3))"));
+        
     }
 
 }
