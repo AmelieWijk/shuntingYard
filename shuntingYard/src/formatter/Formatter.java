@@ -1,3 +1,5 @@
+package formatter;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -5,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * used to format a string to usable tokens for shuntingYard
  * Created by Benjamin Wijk on 2017-06-12.
  */
 public class Formatter {
@@ -37,9 +40,9 @@ public class Formatter {
         Pattern number = Pattern.compile("^-?\\d+(\\.\\d+)?"); //Optional "-" at start, allows integer or double.
         Pattern operator = Pattern.compile("^[-+*^/]");
         Pattern function = Pattern.compile("^[a-zA-Z]*\\(");
-        //Pattern leftParenth = Pattern.compile("^\\("); //Not needed, covered by function.
-        Pattern rightParenthesis = Pattern.compile("\\)");
-        Pattern separator = Pattern.compile(",");
+        Pattern rightParenthesis = Pattern.compile("^\\)");
+        Pattern separator = Pattern.compile("^,");
+        //Pattern leftParenthesis = Pattern.compile("^\\("); //Not needed, covered by function.
 
         patterns = new LinkedList<>();
         patterns.add(number);
@@ -51,8 +54,8 @@ public class Formatter {
 
     public static void main (String[] args){
     Formatter form = new Formatter();
-    System.out.println(form.formatString("321312-32.423(hej(3+3))"));
-        
+    System.out.println(form.formatString("32-123*hej(2,(3*2))"));
+
     }
 
 }
