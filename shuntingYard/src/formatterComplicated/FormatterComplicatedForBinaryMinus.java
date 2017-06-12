@@ -1,4 +1,4 @@
-package formatter;
+package formatterComplicated;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,11 +10,11 @@ import java.util.regex.Pattern;
  * used to format a string to usable tokens for shuntingYard
  * Created by Benjamin Wijk on 2017-06-12.
  */
-public class Formatter {
+public class FormatterComplicatedForBinaryMinus {
     List<Pattern> patterns;
     StringJoiner sj;
 
-    public Formatter(){
+    public FormatterComplicatedForBinaryMinus(){
         setupPatterns();
     }
 
@@ -37,7 +37,7 @@ public class Formatter {
     }
 
     public void setupPatterns(){
-        Pattern number = Pattern.compile("^\\d+(\\.\\d+)?"); //Optional "-" at start, allows integer or double.
+        Pattern number = Pattern.compile("^\\d+(\\.\\d+)?"); //allows integer or double.
         Pattern operator = Pattern.compile("^[-+*^/]");
         Pattern function = Pattern.compile("^[a-zA-Z]*\\(");
         Pattern rightParenthesis = Pattern.compile("^\\)");
@@ -53,7 +53,7 @@ public class Formatter {
     }
 
     public static void main (String[] args){
-    Formatter form = new Formatter();
+    FormatterComplicatedForBinaryMinus form = new FormatterComplicatedForBinaryMinus();
     System.out.println(form.formatString("32-123*hej(2,(3*2))"));
 
     }
