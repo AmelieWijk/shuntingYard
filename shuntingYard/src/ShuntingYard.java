@@ -219,7 +219,7 @@ public class ShuntingYard {
     }
 
     private boolean isFunction(String token) {
-        return token.matches("[a-zA-Z]+[(]");
+        return token.matches("[a-zA-Z]+\\(");
     }
 
     private boolean isOperator(String token) {
