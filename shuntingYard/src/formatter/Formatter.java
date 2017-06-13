@@ -8,19 +8,15 @@ import java.util.regex.Pattern;
 public class Formatter {
 
     public static String formatString(String toFormat){
-        Pattern minusNumber = Pattern.compile("-\\d+(\\.\\d+)?"); //allows integer or double.
+       // Pattern minusNumber = Pattern.compile("-\\d+(\\.\\d+)?"); //allows integer or double.
         Pattern number = Pattern.compile("\\d+(\\.\\d+)?"); //allows integer or double.
-        Pattern operator = Pattern.compile("[-+*^/]");
+        Pattern operator = Pattern.compile("[-+*^),/]");
         Pattern function = Pattern.compile("[a-zA-Z]*\\(");
-        Pattern rightParenthesis = Pattern.compile("\\)");
-        Pattern separator = Pattern.compile(",");
-
-        toFormat = minusNumber.matcher(toFormat).replaceAll("+(0$0)");
+        
+        //toFormat = minusNumber.matcher(toFormat).replaceAll("+(0$0)");
         toFormat = number.matcher(toFormat).replaceAll("$0 ");
         toFormat = operator.matcher(toFormat).replaceAll("$0 ");
         toFormat = function.matcher(toFormat).replaceAll("$0 ");
-        toFormat = rightParenthesis.matcher(toFormat).replaceAll("$0 ");
-        toFormat = separator.matcher(toFormat).replaceAll("$0 ");
 
         return toFormat;
     }
