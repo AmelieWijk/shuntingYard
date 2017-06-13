@@ -66,11 +66,11 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
     //TODO add support for arg separator
     //TODO make sure internal part is a correct operation (e.g. not just an operator)
     /**
-     * Creates a function with tokens inside of a closed parenthesis. this function can contain other functions. <br>
-     *     statements inside a function can currently be invalid (for example, a single operator with no other tokens). <br>
+     * Creates a function with token inside of a closed parenthesis. this function can contain other functions. <br>
+     *     statements inside a function can currently be invalid (for example, a single operator with no other token). <br>
      *     The statement should however be sufficiently correct to be able to be sorted by sortToRPN().
-     * @param tokenCount number of tokens that will be used inside function statement
-     * @return String of infix tokens separated by whitespace.
+     * @param tokenCount number of token that will be used inside function statement
+     * @return String of infix token separated by whitespace.
      */
     String getValidFunction(int tokenCount){
         StringJoiner sj = new StringJoiner(" ");
@@ -80,10 +80,10 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
             int tokensLeft = tokenCount - i - 1;
             int tokenOrFunction = rand.nextInt(2);
 
-            if(tokensLeft >= 3 && tokenOrFunction == 0) { //Enough tokens to create a function inside this function
+            if(tokensLeft >= 3 && tokenOrFunction == 0) { //Enough token to create a function inside this function
                     int internalTokenCount = rand.nextInt(tokensLeft-2)+1;
                     sj.add(getValidFunction(internalTokenCount))
-                    i = i + internalTokenCount + 2; //"Shift" i to match the amount of tokens added
+                    i = i + internalTokenCount + 2; //"Shift" i to match the amount of token added
             } else {
                 sj.add(getValidToken());
             }
