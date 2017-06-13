@@ -170,7 +170,7 @@ public class ShuntingYard {
 
                 output.add(
                         stack.pop());
-            } 
+            }
             //Loop done, remove parenthesis.
             if(isFunction(stack.peek())){
                 output.add(stack.pop()); //add function token
