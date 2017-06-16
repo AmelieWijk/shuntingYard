@@ -24,7 +24,22 @@ public class Operator implements Comparable<Operator>, Token {
 
     @Override
     public void handle(Stack<Token> stack, Stack<Token> output) {
+        if (stack.empty()) { //Nothing to compare, just add to stack
+            stack.add(this);
+            return;
+        }
 
+        while (!stack.empty() && (stack.peek() instanceof Operator)) { //While valid operator comparison can be made
+
+            int compVal = this.compareTo((Operator) stack.peek());
+            if (compVal == 1) { //If precedence and leftAssociative prerequisites are "met", pop stack before input.
+                output.add(
+                        stack.pop());
+            } else { //prerequisites not met, break loop and only pop input to stack.
+                break;
+            }
+        }
+        stack.add(this);
     }
 
     /**
