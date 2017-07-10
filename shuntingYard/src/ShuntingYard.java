@@ -1,9 +1,13 @@
+import formatter.Formatter;
 import token.Function;
 import token.Operator;
 import token.Token;
 import token.Tokenizer;
 
-import java.util.*;
+import java.util.InputMismatchException;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.StringJoiner;
 
 /**
  * A class that sorts a string of infix to Reverse Polish Notation (RPN)
@@ -13,7 +17,7 @@ public class ShuntingYard {
     private Stack<Token> output;
     private Stack<Token> stack;
     private Queue<Token> input;
-    
+
     /**
      * Begins the process of sorting token according to Reverse Polish Notation
      *
@@ -21,6 +25,8 @@ public class ShuntingYard {
      * @return String with token sorted by RPN
      */
     public String sortToRPN(String calculation) {
+        calculation = Formatter.formatString(calculation);
+
         output = new Stack<>();
         stack = new Stack<>();
         input = new Tokenizer().tokenize(calculation);
@@ -68,13 +74,10 @@ public class ShuntingYard {
         }
     }
 
-
-
     private void printStacks() {
         System.out.println("in: " + input);
         System.out.println("op: " + stack);
         System.out.println("out: " + output);
     }
-
 
 }
