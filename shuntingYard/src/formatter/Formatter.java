@@ -23,10 +23,4 @@ public class Formatter {
         return toFormat.trim();
     }
 
-    public static void main(String []args){
-        String s = Formatter.formatString("52.75     +      55-(55*32.2)+max(44/2)");
-        System.out.println(s);
-
-    }
-
 }
