@@ -6,7 +6,6 @@ import token.Tokenizer;
 import java.util.*;
 
 /**
- * TODO use tokenizer for optimization?? (is<X> check only done once)
  * A class that sorts a string of infix to Reverse Polish Notation (RPN)
  * Created by Benjamin Wijk on 2017-05-29.
  */
@@ -14,8 +13,7 @@ public class ShuntingYard {
     private Stack<Token> output;
     private Stack<Token> stack;
     private Queue<Token> input;
-
-
+    
     /**
      * Begins the process of sorting token according to Reverse Polish Notation
      *
