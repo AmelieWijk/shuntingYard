@@ -92,7 +92,6 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
         sj.add(")");
 
         return sj.toString();
-
     }
 
     String getValidToken() {
