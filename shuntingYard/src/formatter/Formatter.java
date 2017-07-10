@@ -8,9 +8,13 @@ import java.util.regex.Pattern;
 public class Formatter {
 
     public static String formatString(String toFormat){
+        Pattern whitespace = Pattern.compile("\\s+");
+
         Pattern number = Pattern.compile("\\d+(\\.\\d+)?"); //allows integer or double.
         Pattern operator = Pattern.compile("[-+*^),/]");
         Pattern function = Pattern.compile("[a-zA-Z]*\\(");
+
+        toFormat = whitespace.matcher(toFormat).replaceAll("");
 
         toFormat = number.matcher(toFormat).replaceAll("$0 ");
         toFormat = operator.matcher(toFormat).replaceAll("$0 ");
@@ -19,5 +23,10 @@ public class Formatter {
         return toFormat.trim();
     }
 
+    public static void main(String []args){
+        String s = Formatter.formatString("52.75     +      55-(55*32.2)+max(44/2)");
+        System.out.println(s);
+
+    }
 
 }

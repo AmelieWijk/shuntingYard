@@ -19,6 +19,7 @@ class FormatterTest extends groovy.util.GroovyTestCase {
     void init(){
         formatStrings.put("-5+32-123*hej(2,(3*2))", "- 5 + 32 - 123 * hej( 2 , ( 3 * 2 ) )");
         formatStrings.put("52.75+55-(55*32.2)+max(44/2)", "52.75 + 55 - ( 55 * 32.2 ) + max( 44 / 2 )");
+        formatStrings.put("52.75     +      55-(55*32.2)+max(44/2)", "52.75 + 55 - ( 55 * 32.2 ) + max( 44 / 2 )");
     }
 
 }
