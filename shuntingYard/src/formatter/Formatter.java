@@ -16,13 +16,8 @@ public class Formatter {
         toFormat = operator.matcher(toFormat).replaceAll("$0 ");
         toFormat = function.matcher(toFormat).replaceAll("$0 ");
 
-        return toFormat;
+        return toFormat.trim();
     }
 
-    public static void main (String[] args){
-        Formatter form = new Formatter();
-        System.out.println(form.formatString("-5+32-123*hej(2,(3*2))"));
-
-    }
 
 }
