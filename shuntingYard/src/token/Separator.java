@@ -19,6 +19,6 @@ public class Separator implements Token {
 
     @Override
     public void handle(Stack<Token> stack, Stack<Token> output) {
-
+        //Do nothing, just pop it.
     }
 }
