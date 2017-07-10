@@ -8,7 +8,7 @@ class ShuntingYardTest extends groovy.util.GroovyTestCase {
     Set<String> functionTokens;
 
     Random rand;
-    public ShuntingYardTest(){
+    ShuntingYardTest(){
         rand = new Random();
         setupTokens();
     }
