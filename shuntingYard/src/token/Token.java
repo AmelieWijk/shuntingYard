@@ -1,5 +1,4 @@
 package token;
-
 import java.util.Stack;
 
 /**
