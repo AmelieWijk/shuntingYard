@@ -6,21 +6,14 @@ import java.util.*;
  * Created by Benjamin Wijk on 2017-06-12.
  */
 public class Tokenizer {
-    Map<String, Operator> operators;
-
-    public Tokenizer(){
-        createOperators();
-
-    }
+    private static Map<String, Operator> operators = createOperators();
 
     private Queue<Token> input = new ArrayDeque<>();
 
-    String s;
-
-    public Queue<Token> tokenize(String string){
-        try(Scanner in = new Scanner(string)) {
+    public Queue<Token> tokenize(String tokenString){
+        try(Scanner in = new Scanner(tokenString)) {
             while (in.hasNext()) {
-                s = in.next();
+                String s = in.next();
 
                 if (isNumber(s)) {
                     input.add(new Number(s));
@@ -39,7 +32,6 @@ public class Tokenizer {
         }
         return input;
     }
-
 
     private boolean isSeparator(String token) {
         return token.equals(",");
@@ -71,14 +63,15 @@ public class Tokenizer {
         return token.equals(")");
     }
 
-    private void createOperators() {
-        operators = new HashMap<>();
+    private static Map<String, Operator> createOperators() {
+        Map<String, Operator> operators = new HashMap<>();
 
         operators.put("^", new Operator("^", 4, false));
         operators.put("*", new Operator("*", 3, true));
         operators.put("/", new Operator("/", 3, true));
         operators.put("+", new Operator("+", 2, true));
         operators.put("-", new Operator("-", 2, true));
-    }
 
+        return operators;
+    }
 }

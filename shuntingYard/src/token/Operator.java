@@ -29,7 +29,6 @@ public class Operator implements Comparable<Operator>, Token {
 				pop operators from the operator stack, onto the output queue.
 		push the read operator onto the operator stack.
      */
-
     @Override
     public void handle(Stack<Token> stack, Stack<Token> output) {
         if (stack.empty()) { //Nothing to compare, just add to stack

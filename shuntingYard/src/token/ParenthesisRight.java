@@ -8,7 +8,6 @@ import java.util.Stack;
  */
 public class ParenthesisRight implements Token {
 
-    private String string = ")";
 
     @Override
     public String getString() {
@@ -29,6 +28,6 @@ public class ParenthesisRight implements Token {
             output.add(stack.pop()); //add function token
         }else{
             stack.pop(); //Pop left parenthesis
-        }         
+        }
     }
 }

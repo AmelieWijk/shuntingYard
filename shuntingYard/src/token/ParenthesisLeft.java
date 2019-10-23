@@ -6,7 +6,6 @@ import java.util.Stack;
  * Created by Benjamin Wijk on 2017-07-10.
  */
 public class ParenthesisLeft implements Token {
-    private String string = "(";
 
     @Override
     public String getString() {
