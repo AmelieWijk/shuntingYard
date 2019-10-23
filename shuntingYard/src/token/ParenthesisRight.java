@@ -20,9 +20,9 @@ public class ParenthesisRight implements Token {
         while (!(stack.peek() instanceof ParenthesisLeft) &&
                 !(stack.peek() instanceof Function)) { //More operators "in" parenthesis, keep popping.
 
-            output.add(
-                    stack.pop());
+            output.add(stack.pop());
         }
+
         //Loop done, remove parenthesis.
         if(stack.peek() instanceof Function){
             output.add(stack.pop()); //add function token

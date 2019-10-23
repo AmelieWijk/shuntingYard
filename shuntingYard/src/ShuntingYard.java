@@ -31,7 +31,6 @@ public class ShuntingYard {
         stack = new Stack<>();
         input = new Tokenizer().tokenize(calculation);
 
-        //Do all the work here.
         try {
             handleTokens();
         } catch (InputMismatchException e) {

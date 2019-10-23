@@ -25,6 +25,7 @@ public class Formatter {
 
         toFormat = WHITESPACE.matcher(toFormat).replaceAll("");
 
+        // "$0" is group zero, meaning everything that was required for the regex to match.
         toFormat = NUMBER.matcher(toFormat).replaceAll("$0 ");
         toFormat = OPERATOR.matcher(toFormat).replaceAll("$0 ");
         toFormat = FUNCTION.matcher(toFormat).replaceAll("$0 ");
